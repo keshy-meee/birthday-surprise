@@ -3,169 +3,135 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Happy Birthday ❤️</title>
+<title>For You ❤️</title>
 
 <style>
 body {
     margin: 0;
     font-family: 'Segoe UI', sans-serif;
-    text-align: center;
     background: linear-gradient(135deg, #ff758c, #ff7eb3);
-    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
     color: white;
 }
 
-/* Floating hearts */
-.heart-bg {
-    position: fixed;
-    bottom: -10px;
-    font-size: 20px;
-    animation: float 6s linear infinite;
-}
-@keyframes float {
-    0% { transform: translateY(0) scale(1); opacity: 1; }
-    100% { transform: translateY(-100vh) scale(1.5); opacity: 0; }
+/* Login Box */
+.login {
+    text-align: center;
 }
 
-/* Container */
-.container {
-    padding: 60px 20px;
-    z-index: 2;
-    position: relative;
-}
-
-h1 {
-    font-size: 3em;
-    animation: fadeIn 2s ease-in-out;
-}
-
-@keyframes fadeIn {
-    from {opacity: 0;}
-    to {opacity: 1;}
-}
-
-/* Typewriter */
-#message {
-    font-size: 1.2em;
-    max-width: 600px;
-    margin: 20px auto;
-    border-right: 2px solid white;
-    white-space: nowrap;
-    overflow: hidden;
-}
-
-/* Button */
-button {
-    padding: 12px 25px;
-    font-size: 16px;
+input {
+    padding: 10px;
+    border-radius: 10px;
     border: none;
-    border-radius: 25px;
+    margin-top: 10px;
+    text-align: center;
+}
+
+button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 20px;
+    margin-top: 10px;
+    cursor: pointer;
     background: white;
     color: #ff4b6e;
-    cursor: pointer;
-    margin-top: 25px;
-    transition: 0.3s;
-}
-button:hover {
-    transform: scale(1.1);
 }
 
-/* Modal Surprise */
-.modal {
+/* Hidden Content */
+.hidden {
     display: none;
-    position: fixed;
-    z-index: 10;
-    left: 0; top: 0;
-    width: 100%; height: 100%;
-    background: rgba(0,0,0,0.7);
 }
 
-.modal-content {
+/* Envelope */
+.envelope {
+    width: 200px;
+    height: 120px;
+    background: #fff;
+    position: relative;
+    margin: auto;
+    cursor: pointer;
+    border-radius: 10px;
+}
+
+.envelope:before {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-left: 100px solid transparent;
+    border-right: 100px solid transparent;
+    border-bottom: 60px solid #ff4b6e;
+    top: -60px;
+    left: 0;
+}
+
+/* Letter */
+.letter {
+    width: 300px;
+    height: 200px;
     background: #fff;
     color: #333;
-    padding: 30px;
-    border-radius: 20px;
-    max-width: 400px;
-    margin: 15% auto;
-    text-align: center;
-    animation: pop 0.5s ease;
+    padding: 20px;
+    border-radius: 10px;
+    margin: 20px auto;
+    display: none;
+    animation: open 1s ease;
 }
 
-@keyframes pop {
-    from {transform: scale(0);}
-    to {transform: scale(1);}
-}
-
-.close {
-    cursor: pointer;
-    font-size: 20px;
-    float: right;
+@keyframes open {
+    from { transform: scale(0); }
+    to { transform: scale(1); }
 }
 </style>
 </head>
 
 <body>
 
-<!-- Background Music -->
-<audio autoplay loop>
-    <source src="https://www.bensound.com/bensound-music/bensound-romantic.mp3" type="audio/mp3">
-</audio>
-
-<div class="container">
-    <h1>Happy Birthday, My Love 🎂</h1>
-
-    <p id="message"></p>
-
-    <button onclick="openSurprise()">Open Your Surprise 💌</button>
+<!-- LOGIN -->
+<div class="login" id="loginBox">
+    <h2>Enter your birthday 🎂</h2>
+    <input type="password" id="pass" placeholder="MMDDYY">
+    <br>
+    <button onclick="checkPass()">Unlock 💌</button>
 </div>
 
-<!-- Surprise Modal -->
-<div id="myModal" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="closeSurprise()">&times;</span>
-        <h2>For You ❤️</h2>
-        <p>
-            I love you more than words can explain.  
-            You are the best thing that ever happened to me.  
-            Happy Birthday, my love 💕
-        </p>
-    </div>
+<!-- ENVELOPE -->
+<div class="hidden" id="envelopeBox">
+    <h2>Click the letter ❤️</h2>
+    <div class="envelope" onclick="openLetter()"></div>
+</div>
+
+<!-- LETTER -->
+<div class="letter" id="letter">
+    <h3>My Love 💖</h3>
+    <p>
+        Happy Birthday ❤️<br><br>
+        I just want you to know how special you are to me.  
+        You make my world brighter in ways I can’t explain.  
+        Every moment with you is something I treasure.  
+        <br><br>
+        I love you more than words can say.  
+        Always and forever 💕
+    </p>
 </div>
 
 <script>
-// Floating hearts generator
-setInterval(() => {
-    const heart = document.createElement("div");
-    heart.className = "heart-bg";
-    heart.innerHTML = "❤️";
-    heart.style.left = Math.random() * 100 + "vw";
-    heart.style.fontSize = (Math.random() * 20 + 10) + "px";
-    document.body.appendChild(heart);
-
-    setTimeout(() => {
-        heart.remove();
-    }, 6000);
-}, 300);
-
-// Typewriter effect
-const text = "Today is all about you. You make my life brighter, my days happier, and my heart fuller. I’m so lucky to have you ❤️";
-let i = 0;
-
-function typeWriter() {
-    if (i < text.length) {
-        document.getElementById("message").innerHTML += text.charAt(i);
-        i++;
-        setTimeout(typeWriter, 40);
+function checkPass() {
+    const pass = document.getElementById("pass").value;
+    
+    if (pass === "040511") {
+        document.getElementById("loginBox").style.display = "none";
+        document.getElementById("envelopeBox").style.display = "block";
+    } else {
+        alert("Hmm... that's not right ❤️");
     }
 }
-typeWriter();
 
-// Modal controls
-function openSurprise() {
-    document.getElementById("myModal").style.display = "block";
-}
-function closeSurprise() {
-    document.getElementById("myModal").style.display = "none";
+function openLetter() {
+    document.getElementById("letter").style.display = "block";
 }
 </script>
 
