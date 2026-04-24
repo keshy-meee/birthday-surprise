@@ -3,51 +3,87 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Private Experience</title>
+<title>Private Message</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
 
 <style>
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Inter', sans-serif;
 }
 
 body {
-    background: #f4f6fb;
+    background: #eef1f6;
+    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    font-family: 'Inter', sans-serif;
 }
 
-/* SCREEN WRAPPER */
-.screen {
-    width: 100%;
-    max-width: 420px;
+/* CONTAINER */
+.wrapper {
+    width: 420px;
 }
 
-/* CARD BASE */
-.card {
+/* ---------------- LOCK UI ---------------- */
+.lock-card {
     background: white;
-    border-radius: 18px;
-    padding: 36px;
-    box-shadow: 0 25px 70px rgba(0,0,0,0.08);
+    border-radius: 22px;
+    padding: 40px;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.08);
     text-align: center;
+    transition: 0.4s ease;
 }
 
-/* LOCK */
-.lock-title {
-    font-size: 20px;
-    font-weight: 600;
-    margin-bottom: 8px;
+/* lock icon (real UI style, not emoji) */
+.lock-icon {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 18px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #4f6cff, #6a8bff);
+    position: relative;
 }
 
-.lock-sub {
+/* lock body */
+.lock-icon:before {
+    content: "";
+    position: absolute;
+    width: 26px;
+    height: 18px;
+    border: 3px solid white;
+    border-top: none;
+    border-radius: 0 0 8px 8px;
+    bottom: 14px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+/* lock shackle */
+.lock-icon:after {
+    content: "";
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    border: 3px solid white;
+    border-bottom: none;
+    border-radius: 10px 10px 0 0;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+h2 {
+    font-size: 18px;
+    margin-bottom: 6px;
+}
+
+p {
+    font-size: 13px;
     color: #777;
-    font-size: 14px;
 }
 
 input {
@@ -72,11 +108,10 @@ button {
     cursor: pointer;
 }
 
-/* shake only when wrong */
+/* shake animation */
 .shake {
-    animation: shake 0.35s;
+    animation: shake 0.4s;
 }
-
 @keyframes shake {
     0%,100%{transform:translateX(0);}
     25%{transform:translateX(-6px);}
@@ -84,99 +119,110 @@ button {
     75%{transform:translateX(-6px);}
 }
 
-/* ENVELOPE */
-#envelopeScene {
+/* ---------------- LETTER PAPER ---------------- */
+#letterScene {
     display: none;
-    text-align: center;
 }
 
-.envelope {
-    width: 260px;
-    height: 160px;
-    margin: auto;
-    background: white;
-    border-radius: 14px;
-    box-shadow: 0 25px 70px rgba(0,0,0,0.1);
+/* paper sheet */
+.paper {
+    background: #fff;
+    border-radius: 10px;
+    padding: 40px;
+    box-shadow: 0 30px 90px rgba(0,0,0,0.1);
     position: relative;
-    cursor: pointer;
-    transition: 0.6s ease;
+    transform: translateY(20px);
+    animation: rise 0.6s ease forwards;
 }
 
-/* flap */
-.envelope:before {
+/* paper texture lines */
+.paper:before {
     content: "";
     position: absolute;
     top: 0;
-    width: 100%;
-    height: 50%;
-    background: #eef1f7;
-    clip-path: polygon(0 0, 100% 0, 50% 100%);
+    left: 40px;
+    width: 2px;
+    height: 100%;
+    background: #f2cbd0;
+    opacity: 0.4;
 }
 
-/* letter */
-.letter {
+.paper:after {
+    content: "";
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, 20px);
-    width: 85%;
-    opacity: 0;
-    transition: 0.6s ease;
-    text-align: left;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: repeating-linear-gradient(
+        to bottom,
+        transparent,
+        transparent 26px,
+        rgba(0,0,0,0.03) 27px
+    );
+    pointer-events: none;
 }
 
-/* OPEN STATE */
-.envelope.open {
-    height: 320px;
-}
-
-.envelope.open .letter {
-    opacity: 1;
-    transform: translate(-50%, -10px);
-}
-
+/* handwriting style title */
 .title {
-    font-weight: 700;
-    margin-bottom: 10px;
+    font-family: 'Playfair Display', serif;
+    font-size: 24px;
+    margin-bottom: 18px;
 }
 
+/* message */
 .message {
     font-size: 14px;
-    line-height: 1.6;
+    line-height: 1.8;
     color: #444;
+}
+
+.signature {
+    margin-top: 30px;
+    font-weight: 600;
+}
+
+/* animation */
+@keyframes rise {
+    from {opacity: 0; transform: translateY(40px);}
+    to {opacity: 1; transform: translateY(0);}
 }
 </style>
 </head>
 
 <body>
 
-<div class="screen">
+<div class="wrapper">
 
     <!-- LOCK -->
-    <div id="lockScreen" class="card">
-        <div class="lock-title">Private Access</div>
-        <div class="lock-sub">Enter the code to continue</div>
+    <div id="lock" class="lock-card">
+        <div class="lock-icon"></div>
+        <h2>Secure Message</h2>
+        <p>Enter the access code to open</p>
 
-        <input type="password" id="code" placeholder="Enter code">
+        <input type="password" id="code" placeholder="••••••">
         <button onclick="unlock()">Unlock</button>
     </div>
 
-    <!-- ENVELOPE -->
-    <div id="envelopeScene">
-        <div class="envelope" id="envelope" onclick="openEnvelope()">
-            <div class="letter">
-                <div class="title">Happy Birthday ❤️</div>
-                <div class="message">
-                    This is something I made just for you.<br><br>
+    <!-- LETTER -->
+    <div id="letterScene">
+        <div class="paper">
+            <div class="title">Happy Birthday</div>
 
-                    Not loud, not flashy — just something real.<br><br>
+            <div class="message">
+                Hey you,<br><br>
 
-                    I hope you feel appreciated today, even in the quiet moments.<br><br>
+                I wanted this to feel like something you physically opened —  
+                like a real letter, not just text on a screen.<br><br>
 
-                    You matter more than you think.
-                    <br><br>
-                    — me
-                </div>
+                You don’t always notice how much you matter to people,  
+                but I hope today gives you a small reminder of that.<br><br>
+
+                I’m really glad you exist in my life, even in the quiet ways.
+            </div>
+
+            <div class="signature">
+                — someone who cares about you
             </div>
         </div>
     </div>
@@ -188,23 +234,19 @@ const SECRET = "040511";
 
 function unlock() {
     const input = document.getElementById("code");
-    const lock = document.getElementById("lockScreen");
+    const lock = document.getElementById("lock");
 
     if (input.value === SECRET) {
         lock.style.opacity = "0";
         lock.style.transform = "scale(0.95)";
         setTimeout(() => {
             lock.style.display = "none";
-            document.getElementById("envelopeScene").style.display = "block";
-        }, 350);
+            document.getElementById("letterScene").style.display = "block";
+        }, 300);
     } else {
         lock.classList.add("shake");
-        setTimeout(() => lock.classList.remove("shake"), 350);
+        setTimeout(() => lock.classList.remove("shake"), 400);
     }
-}
-
-function openEnvelope() {
-    document.getElementById("envelope").classList.toggle("open");
 }
 </script>
 
