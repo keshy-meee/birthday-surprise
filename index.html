@@ -1,176 +1,194 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Something for You</title>
 
-<title>For You</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 
 <style>
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
 }
 
 body {
+    background: radial-gradient(circle at top, #f8fafc, #e6ebf5);
+    color: #1a1a1a;
+    overflow-x: hidden;
+}
+
+/* HERO */
+.hero {
     height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-family: 'Inter', sans-serif;
-    color: #f5f5f5;
-
-    /* premium spotlight background */
-    background: radial-gradient(circle at center, #1a1a1a 0%, #0a0a0a 70%);
-}
-
-/* SHARED CARD STYLE */
-#login, #envelope-container, #final {
+    flex-direction: column;
     text-align: center;
-    padding: 40px;
-    border-radius: 16px;
-
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-
-    backdrop-filter: blur(12px);
-    box-shadow: 0 20px 60px rgba(0,0,0,0.7);
+    padding: 20px;
 }
 
-/* LOGIN */
-#login {
-    transition: 0.8s;
+.glass {
+    background: rgba(255,255,255,0.7);
+    backdrop-filter: blur(12px);
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.08);
+    max-width: 500px;
+    width: 100%;
+}
+
+h1 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+p {
+    color: #666;
+    font-size: 1rem;
+    line-height: 1.6;
 }
 
 input {
-    margin-top: 15px;
+    margin-top: 20px;
+    width: 100%;
     padding: 12px;
-    width: 240px;
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.15);
-    color: white;
-    border-radius: 8px;
-    outline: none;
+    border-radius: 12px;
+    border: 1px solid #ddd;
     text-align: center;
+    outline: none;
 }
 
 button {
     margin-top: 15px;
-    padding: 12px 26px;
-    background: linear-gradient(135deg, #d4af37, #f5d76e);
+    width: 100%;
+    padding: 12px;
     border: none;
-    color: black;
+    border-radius: 12px;
+    background: #5b7cff;
+    color: white;
+    font-weight: 600;
     cursor: pointer;
-    border-radius: 8px;
-    font-weight: 500;
+    transition: 0.3s ease;
 }
 
-/* ENVELOPE */
-#envelope {
-    width: 320px;
-    height: 200px;
+button:hover {
+    transform: translateY(-2px);
+    background: #4a69e8;
+}
+
+/* HIDDEN CONTENT */
+#content {
+    display: none;
+}
+
+/* SECTION */
+.section {
+    max-width: 800px;
     margin: auto;
-    background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
-    border-radius: 12px;
-    position: relative;
-    box-shadow: 0 25px 70px rgba(0,0,0,0.8);
-    cursor: pointer;
-    transition: 0.4s;
-    display: none;
+    padding: 80px 20px;
 }
 
-#envelope:hover {
-    transform: translateY(-6px);
+.card {
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.06);
+    animation: fadeUp 0.8s ease;
 }
 
-/* LETTER */
-#letter {
-    margin-top: 20px;
-    opacity: 0;
-    transform: translateY(20px);
-    transition: 1s ease;
-    color: #111;
-    background: #f7f3e8;
-    padding: 25px;
-    border-radius: 12px;
-    max-width: 420px;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+.card h2 {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
 }
 
-/* FINAL SCREEN */
-#final {
-    display: none;
-    font-family: 'Playfair Display', serif;
-    font-size: 28px;
+.card p {
+    font-size: 1.05rem;
+    line-height: 1.8;
+    color: #444;
+}
+
+.signature {
+    margin-top: 30px;
+    font-weight: 600;
+}
+
+/* ANIMATION */
+@keyframes fadeUp {
+    from {opacity: 0; transform: translateY(20px);}
+    to {opacity: 1; transform: translateY(0);}
 }
 </style>
 </head>
 
 <body>
 
-<!-- LOGIN -->
-<div id="login">
-    <h2>Enter Your Birthday</h2>
-    <input type="password" id="bday" placeholder="DDMMYY">
-    <br>
-    <button onclick="check()">Enter</button>
+<!-- HERO -->
+<div class="hero" id="loginPage">
+    <div class="glass">
+        <h1>Private Experience</h1>
+        <p>A small space made just for you. Enter the code to continue.</p>
+        
+        <input type="password" id="code" placeholder="Enter access code">
+        <button onclick="unlock()">Enter</button>
+    </div>
 </div>
 
-<!-- ENVELOPE -->
-<div id="envelope" onclick="openLetter()"></div>
+<!-- MAIN CONTENT -->
+<div id="content">
 
-<!-- LETTER -->
-<div id="letter">
-    <p id="message"></p>
-</div>
+    <div class="section">
+        <div class="card">
+            <h2>Happy Birthday</h2>
+            <p>
+                This isn’t just a message.<br><br>
 
-<!-- FINAL -->
-<div id="final">
-    Happy Birthday ❤️
+                It’s a small reminder that someone took time to build something just for you —  
+                not because they had to, but because they wanted to.<br><br>
+
+                You don’t always realize how much presence you have in someone’s life,  
+                but you matter more than you think.
+            </p>
+
+            <div class="signature">
+                — someone who values you quietly
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="card">
+            <h2>One More Thing</h2>
+            <p>
+                I hope this year gives you more peace than stress,  
+                more clarity than confusion,  
+                and more happiness than you expected.<br><br>
+
+                Happy birthday ❤️
+            </p>
+        </div>
+    </div>
+
 </div>
 
 <script>
-function check() {
-    let input = document.getElementById("bday").value;
+const SECRET = "040511";
 
-    if(input === "040511") {
-        document.getElementById("login").style.opacity = "0";
+function unlock() {
+    const input = document.getElementById("code").value;
 
-        setTimeout(() => {
-            document.getElementById("login").style.display = "none";
-            document.getElementById("envelope").style.display = "block";
-        }, 800);
+    if (input === SECRET) {
+        document.getElementById("loginPage").style.display = "none";
+        document.getElementById("content").style.display = "block";
+        window.scrollTo({ top: 0, behavior: "smooth" });
     } else {
-        alert("Wrong birthday");
+        alert("Incorrect code ❤️");
     }
-}
-
-function openLetter() {
-    let letter = document.getElementById("letter");
-    let message = document.getElementById("message");
-
-    letter.style.opacity = "1";
-    letter.style.transform = "translateY(-120px)";
-
-    let text = "You deserve a day as beautiful as your smile. Thank you for being part of my life.";
-    let i = 0;
-
-    function type() {
-        if(i < text.length) {
-            message.innerHTML += text.charAt(i);
-            i++;
-            setTimeout(type, 35);
-        }
-    }
-
-    type();
-
-    setTimeout(() => {
-        document.getElementById("final").style.display = "block";
-    }, 5000);
 }
 </script>
 
