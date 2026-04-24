@@ -3,115 +3,123 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Private Message</title>
+<title>A Private Experience</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
 
 <style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+* {margin:0;padding:0;box-sizing:border-box;}
 
 body {
-    background: #eef1f6;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-family: 'Inter', sans-serif;
+    height:100vh;
+    overflow:hidden;
+    font-family:Inter;
+    background: linear-gradient(-45deg,#eef2ff,#f7f7fb,#eef6ff,#f3f4f6);
+    background-size: 400% 400%;
+    animation: gradientMove 12s ease infinite;
 }
 
-/* CONTAINER */
+/* background animation */
+@keyframes gradientMove {
+    0%{background-position:0% 50%;}
+    50%{background-position:100% 50%;}
+    100%{background-position:0% 50%;}
+}
+
+/* canvas particles */
+canvas {
+    position:fixed;
+    top:0;left:0;
+    z-index:0;
+}
+
+/* CENTER WRAPPER */
 .wrapper {
-    width: 420px;
+    position:relative;
+    z-index:2;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
 }
 
-/* ---------------- LOCK UI ---------------- */
-.lock-card {
-    background: white;
-    border-radius: 22px;
-    padding: 40px;
-    box-shadow: 0 30px 80px rgba(0,0,0,0.08);
-    text-align: center;
-    transition: 0.4s ease;
+/* LOCK */
+.lock {
+    width:360px;
+    padding:40px;
+    background:rgba(255,255,255,0.8);
+    backdrop-filter: blur(14px);
+    border-radius:20px;
+    box-shadow:0 30px 80px rgba(0,0,0,0.08);
+    text-align:center;
+    transition:0.6s;
 }
 
-/* lock icon (real UI style, not emoji) */
-.lock-icon {
-    width: 64px;
-    height: 64px;
-    margin: 0 auto 18px;
-    border-radius: 16px;
-    background: linear-gradient(135deg, #4f6cff, #6a8bff);
-    position: relative;
+.lockIcon {
+    width:70px;
+    height:70px;
+    margin:auto;
+    border-radius:18px;
+    background:linear-gradient(135deg,#4f6cff,#6a8bff);
+    position:relative;
+    transform-style:preserve-3d;
+    animation: float 3s ease-in-out infinite;
 }
 
-/* lock body */
-.lock-icon:before {
-    content: "";
-    position: absolute;
-    width: 26px;
-    height: 18px;
-    border: 3px solid white;
-    border-top: none;
-    border-radius: 0 0 8px 8px;
-    bottom: 14px;
-    left: 50%;
-    transform: translateX(-50%);
+.lockIcon:before {
+    content:"";
+    position:absolute;
+    width:28px;
+    height:18px;
+    border:3px solid white;
+    border-top:none;
+    bottom:12px;
+    left:50%;
+    transform:translateX(-50%);
+    border-radius:0 0 8px 8px;
 }
 
-/* lock shackle */
-.lock-icon:after {
-    content: "";
-    position: absolute;
-    width: 18px;
-    height: 18px;
-    border: 3px solid white;
-    border-bottom: none;
-    border-radius: 10px 10px 0 0;
-    top: 10px;
-    left: 50%;
-    transform: translateX(-50%);
+.lockIcon:after {
+    content:"";
+    position:absolute;
+    width:18px;
+    height:18px;
+    border:3px solid white;
+    border-bottom:none;
+    top:10px;
+    left:50%;
+    transform:translateX(-50%);
+    border-radius:10px 10px 0 0;
 }
 
-h2 {
-    font-size: 18px;
-    margin-bottom: 6px;
-}
-
-p {
-    font-size: 13px;
-    color: #777;
+@keyframes float {
+    0%,100%{transform:translateY(0);}
+    50%{transform:translateY(-6px);}
 }
 
 input {
-    margin-top: 20px;
-    width: 100%;
-    padding: 12px;
-    border-radius: 12px;
-    border: 1px solid #ddd;
-    text-align: center;
-    outline: none;
+    margin-top:20px;
+    width:100%;
+    padding:12px;
+    border-radius:12px;
+    border:1px solid #ddd;
+    text-align:center;
 }
 
 button {
-    margin-top: 14px;
-    width: 100%;
-    padding: 12px;
-    border: none;
-    border-radius: 12px;
-    background: #4f6cff;
-    color: white;
-    font-weight: 600;
-    cursor: pointer;
+    margin-top:14px;
+    width:100%;
+    padding:12px;
+    border:none;
+    border-radius:12px;
+    background:#4f6cff;
+    color:white;
+    font-weight:600;
+    cursor:pointer;
 }
 
-/* shake animation */
-.shake {
-    animation: shake 0.4s;
-}
+/* shake */
+.shake {animation:shake .4s;}
 @keyframes shake {
     0%,100%{transform:translateX(0);}
     25%{transform:translateX(-6px);}
@@ -119,135 +127,186 @@ button {
     75%{transform:translateX(-6px);}
 }
 
-/* ---------------- LETTER PAPER ---------------- */
-#letterScene {
-    display: none;
+/* SCENES */
+#scene2 {display:none;}
+
+/* ENVELOPE */
+.envelope {
+    width:280px;
+    height:180px;
+    background:white;
+    border-radius:14px;
+    position:relative;
+    cursor:pointer;
+    box-shadow:0 30px 80px rgba(0,0,0,0.1);
+    transition:0.6s;
 }
 
-/* paper sheet */
-.paper {
-    background: #fff;
-    border-radius: 10px;
-    padding: 40px;
-    box-shadow: 0 30px 90px rgba(0,0,0,0.1);
-    position: relative;
-    transform: translateY(20px);
-    animation: rise 0.6s ease forwards;
+.envelope:before {
+    content:"";
+    position:absolute;
+    top:0;
+    width:100%;
+    height:50%;
+    background:#eef2ff;
+    clip-path: polygon(0 0,100% 0,50% 100%);
+    transition:0.6s;
 }
 
-/* paper texture lines */
-.paper:before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 40px;
-    width: 2px;
-    height: 100%;
-    background: #f2cbd0;
-    opacity: 0.4;
+/* LETTER */
+.letter {
+    position:absolute;
+    width:85%;
+    left:50%;
+    transform:translate(-50%,30px);
+    opacity:0;
+    transition:0.6s;
+    background:white;
+    padding:20px;
+    border-radius:10px;
 }
 
-.paper:after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
-    background: repeating-linear-gradient(
-        to bottom,
-        transparent,
-        transparent 26px,
-        rgba(0,0,0,0.03) 27px
-    );
-    pointer-events: none;
+.envelope.open {
+    height:340px;
 }
 
-/* handwriting style title */
-.title {
-    font-family: 'Playfair Display', serif;
-    font-size: 24px;
-    margin-bottom: 18px;
+.envelope.open .letter {
+    opacity:1;
+    transform:translate(-50%,-10px);
 }
 
-/* message */
-.message {
-    font-size: 14px;
-    line-height: 1.8;
-    color: #444;
+/* PAPER STYLE */
+.paperTitle {
+    font-family:"Playfair Display";
+    font-size:22px;
+    margin-bottom:12px;
 }
 
-.signature {
-    margin-top: 30px;
-    font-weight: 600;
+.paperText {
+    font-size:14px;
+    line-height:1.7;
+    color:#444;
 }
 
-/* animation */
-@keyframes rise {
-    from {opacity: 0; transform: translateY(40px);}
-    to {opacity: 1; transform: translateY(0);}
+/* fade transition */
+.fadeOut {
+    opacity:0;
+    transform:scale(0.95);
+    transition:0.5s;
 }
 </style>
 </head>
 
 <body>
 
+<canvas id="bg"></canvas>
+
 <div class="wrapper">
 
-    <!-- LOCK -->
-    <div id="lock" class="lock-card">
-        <div class="lock-icon"></div>
-        <h2>Secure Message</h2>
-        <p>Enter the access code to open</p>
+<!-- LOCK -->
+<div id="scene1" class="lock">
+    <div class="lockIcon"></div>
+    <h2 style="margin-top:15px;">Private Access</h2>
+    <p style="font-size:13px;color:#666;">Enter code to continue</p>
 
-        <input type="password" id="code" placeholder="••••••">
-        <button onclick="unlock()">Unlock</button>
-    </div>
+    <input type="password" id="code">
+    <button onclick="unlock()">Unlock</button>
+</div>
 
-    <!-- LETTER -->
-    <div id="letterScene">
-        <div class="paper">
-            <div class="title">Happy Birthday</div>
+<!-- ENVELOPE SCENE -->
+<div id="scene2">
+    <div class="envelope" id="env" onclick="openLetter()">
+        <div class="letter">
+            <div class="paperTitle">Happy Birthday ❤️</div>
+            <div class="paperText">
+                This is not just a message.<br><br>
 
-            <div class="message">
-                Hey you,<br><br>
+                It’s something meant to feel like you’re opening a real letter.<br><br>
 
-                I wanted this to feel like something you physically opened —  
-                like a real letter, not just text on a screen.<br><br>
+                I hope today gives you peace in ways you don’t expect.<br><br>
 
-                You don’t always notice how much you matter to people,  
-                but I hope today gives you a small reminder of that.<br><br>
-
-                I’m really glad you exist in my life, even in the quiet ways.
-            </div>
-
-            <div class="signature">
-                — someone who cares about you
+                You matter more than you realize.
             </div>
         </div>
     </div>
+</div>
 
 </div>
 
 <script>
-const SECRET = "040511";
+const SECRET="040511";
 
-function unlock() {
-    const input = document.getElementById("code");
-    const lock = document.getElementById("lock");
+/* SOUND */
+function beep(freq,duration){
+    const ctx=new (window.AudioContext||window.webkitAudioContext)();
+    const osc=ctx.createOscillator();
+    const gain=ctx.createGain();
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.frequency.value=freq;
+    osc.start();
+    gain.gain.exponentialRampToValueAtTime(0.0001,ctx.currentTime+duration);
+    osc.stop(ctx.currentTime+duration);
+}
 
-    if (input.value === SECRET) {
-        lock.style.opacity = "0";
-        lock.style.transform = "scale(0.95)";
-        setTimeout(() => {
-            lock.style.display = "none";
-            document.getElementById("letterScene").style.display = "block";
-        }, 300);
-    } else {
-        lock.classList.add("shake");
-        setTimeout(() => lock.classList.remove("shake"), 400);
+/* UNLOCK */
+function unlock(){
+    const input=document.getElementById("code");
+    const scene1=document.getElementById("scene1");
+
+    if(input.value===SECRET){
+        beep(600,0.2);
+
+        scene1.classList.add("fadeOut");
+
+        setTimeout(()=>{
+            scene1.style.display="none";
+            document.getElementById("scene2").style.display="block";
+        },500);
+
+    }else{
+        beep(200,0.2);
+        scene1.classList.add("shake");
+        setTimeout(()=>scene1.classList.remove("shake"),400);
     }
 }
+
+/* ENVELOPE */
+function openLetter(){
+    beep(800,0.1);
+    document.getElementById("env").classList.toggle("open");
+}
+
+/* PARTICLES */
+const canvas=document.getElementById("bg");
+const ctx=canvas.getContext("2d");
+canvas.width=innerWidth;
+canvas.height=innerHeight;
+
+let particles=[];
+for(let i=0;i<60;i++){
+    particles.push({
+        x:Math.random()*canvas.width,
+        y:Math.random()*canvas.height,
+        r:Math.random()*2,
+        d:Math.random()*1
+    });
+}
+
+function draw(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle="rgba(100,120,255,0.15)";
+    for(let p of particles){
+        ctx.beginPath();
+        ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+        ctx.fill();
+
+        p.y+=p.d;
+        if(p.y>canvas.height)p.y=0;
+    }
+    requestAnimationFrame(draw);
+}
+draw();
 </script>
 
 </body>
