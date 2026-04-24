@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday ❤️</title>
+<style>
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        text-align: center;
+        background: linear-gradient(to right, #ff9a9e, #fad0c4);
+        color: #333;
+    }
+    .container {
+        padding: 50px 20px;
+    }
+    h1 {
+        font-size: 3em;
+        color: #fff;
+    }
+    p {
+        font-size: 1.2em;
+        max-width: 600px;
+        margin: 20px auto;
+        color: #fff;
+    }
+    .heart {
+        font-size: 50px;
+        animation: heartbeat 1s infinite;
+    }
+    @keyframes heartbeat {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.2); }
+        100% { transform: scale(1); }
+    }
+    button {
+        padding: 10px 20px;
+        font-size: 16px;
+        border: none;
+        border-radius: 20px;
+        background-color: #fff;
+        color: #ff6b81;
+        cursor: pointer;
+        margin-top: 20px;
+    }
+    #secret {
+        display: none;
+        margin-top: 30px;
+        font-size: 1.3em;
+        color: #fff;
+    }
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <h1>Happy Birthday, My Love 🎂</h1>
+
+    <div class="heart">❤️</div>
+
+    <p>
+        Today is all about you. Thank you for being part of my life, for your smile, 
+        your laughter, and everything you do. You make my days brighter than you know.
+    </p>
+
+    <p>
+        I hope this year brings you happiness, success, and everything your heart desires.
+        You deserve it all.
+    </p>
+
+    <button onclick="showMessage()">Click me 💌</button>
+
+    <div id="secret">
+        I love you more than words can explain. Happy Birthday again ❤️
+    </div>
+</div>
+
+<script>
+function showMessage() {
+    document.getElementById("secret").style.display = "block";
+}
+</script>
+
+</body>
+</html>
