@@ -5,110 +5,130 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>For You</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display&family=Inter&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display&family=Inter:wght@300&display=swap" rel="stylesheet">
 
 <style>
+* { margin:0; padding:0; box-sizing:border-box; }
+
 body {
-    margin: 0;
     height: 100vh;
     font-family: 'Inter', sans-serif;
-    background: url('https://images.unsplash.com/photo-1519681393784-d120267933ba') no-repeat center/cover;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-/* Glass login */
-.login {
-    backdrop-filter: blur(15px);
-    background: rgba(255,255,255,0.1);
-    padding: 40px;
-    border-radius: 20px;
-    text-align: center;
-    color: white;
-    box-shadow: 0 8px 30px rgba(0,0,0,0.3);
-}
-
-input {
-    padding: 12px;
-    border-radius: 10px;
-    border: none;
-    margin-top: 10px;
-    width: 200px;
-    text-align: center;
-}
-
-button {
-    padding: 12px 25px;
-    border-radius: 30px;
-    border: none;
-    margin-top: 15px;
-    cursor: pointer;
-    background: white;
-    color: #333;
-}
-
-/* Envelope (realistic style) */
-.envelope-container {
-    display: none;
-    text-align: center;
-}
-
-.envelope {
-    width: 280px;
-    height: 180px;
-    background: #f5f5f5;
-    border-radius: 6px;
-    position: relative;
-    cursor: pointer;
-    box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+    background: radial-gradient(circle at center, #1a1a1a, #000);
+    color: #eee;
     overflow: hidden;
 }
 
-/* top flap */
-.flap {
+/* subtle moving light */
+body::before {
+    content: "";
     position: absolute;
-    width: 100%;
-    height: 100%;
-    background: #eaeaea;
-    transform-origin: top;
-    transition: 0.6s;
-    clip-path: polygon(0 0, 100% 0, 50% 60%);
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.05), transparent 60%);
+    animation: move 10s infinite linear;
+}
+@keyframes move {
+    from { transform: translate(-25%, -25%); }
+    to { transform: translate(25%, 25%); }
 }
 
-/* letter paper */
-.paper {
+/* center container */
+.center {
     position: absolute;
-    width: 90%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    z-index: 2;
+}
+
+/* input */
+input {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #666;
+    color: white;
+    font-size: 20px;
+    text-align: center;
+    padding: 10px;
+    outline: none;
+    letter-spacing: 3px;
+}
+
+button {
+    margin-top: 20px;
+    padding: 10px 25px;
+    border: 1px solid #888;
+    background: transparent;
+    color: #ccc;
+    cursor: pointer;
+    transition: 0.3s;
+}
+button:hover {
+    color: white;
+    border-color: white;
+}
+
+/* hidden */
+.hidden { display: none; }
+
+/* envelope minimal */
+.envelope {
+    width: 260px;
     height: 160px;
-    background: #fff;
-    top: 100%;
-    left: 5%;
-    border-radius: 5px;
-    padding: 20px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-    transition: 0.6s;
+    border: 1px solid #888;
+    margin: auto;
+    cursor: pointer;
+    position: relative;
+    transition: 0.5s;
+}
+
+.envelope:hover {
+    transform: scale(1.05);
+}
+
+/* line in middle */
+.envelope::after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 1px;
+    background: #888;
+    top: 50%;
+    left: 0;
+}
+
+/* letter overlay */
+.letter {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #fafafa;
+    color: #111;
+    padding: 40px;
     font-family: 'Playfair Display', serif;
-    color: #333;
+    opacity: 0;
+    transform: scale(0.95);
+    transition: 0.8s;
+    overflow-y: auto;
 }
 
 /* open state */
-.open .flap {
-    transform: rotateX(180deg);
+.open .letter {
+    opacity: 1;
+    transform: scale(1);
 }
 
-.open .paper {
-    top: -60px;
+/* text */
+.letter h2 {
+    margin-bottom: 20px;
 }
 
-/* letter text */
-.paper h3 {
-    margin-top: 0;
-}
-
-.paper p {
-    font-size: 14px;
-    line-height: 1.6;
+.letter p {
+    line-height: 1.7;
+    font-size: 15px;
 }
 </style>
 </head>
@@ -116,46 +136,48 @@ button {
 <body>
 
 <!-- LOGIN -->
-<div class="login" id="loginBox">
-    <h2>Enter something special</h2>
-    <input type="password" id="pass" placeholder="••••••">
+<div class="center" id="login">
+    <h3 style="margin-bottom:15px; opacity:0.7;">enter the date that matters</h3>
+    <input type="password" id="pass" placeholder="•• •• ••">
     <br>
-    <button onclick="checkPass()">Unlock</button>
+    <button onclick="unlock()">unlock</button>
 </div>
 
-<!-- ENVELOPE -->
-<div class="envelope-container" id="mainContent">
+<!-- MAIN -->
+<div class="center hidden" id="main">
     <div class="envelope" onclick="openLetter()" id="env">
-        <div class="flap"></div>
 
-        <div class="paper">
-            <h3>My Love,</h3>
+        <div class="letter">
+            <h2>Hey you,</h2>
             <p>
-                Happy Birthday.<br><br>
-                I wanted to give you something simple, but meaningful.  
-                Something you can open, just like this moment.  
+                I didn’t want to just send a message like everyone else.
+                I wanted this to feel… different.
                 <br><br>
-                You’ve become a part of my life in a way I never expected.  
-                And honestly, I wouldn’t trade that for anything.  
+                Like something you open slowly.
+                Something you remember.
                 <br><br>
-                I hope today reminds you how special you are — not just to me,
-                but to everyone lucky enough to know you.
+                You’ve become one of the best parts of my life,
+                and I don’t say that lightly.
                 <br><br>
-                — Yours ❤️
+                Being with you feels calm, real, and right.
+                And honestly, I’m just grateful for you.
+                <br><br>
+                Happy Birthday.
+                <br><br>
+                — Yours
             </p>
         </div>
+
     </div>
 </div>
 
 <script>
-function checkPass() {
-    const pass = document.getElementById("pass").value;
-
-    if (pass === "040511") {
-        document.getElementById("loginBox").style.display = "none";
-        document.getElementById("mainContent").style.display = "block";
+function unlock() {
+    if (document.getElementById("pass").value === "040511") {
+        document.getElementById("login").style.display = "none";
+        document.getElementById("main").classList.remove("hidden");
     } else {
-        alert("Try again ❤️");
+        alert("not quite.");
     }
 }
 
