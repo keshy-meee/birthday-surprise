@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Something for You</title>
+<title>Private Message</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 
@@ -16,42 +16,39 @@
 }
 
 body {
-    background: radial-gradient(circle at top, #f8fafc, #e6ebf5);
-    color: #1a1a1a;
-    overflow-x: hidden;
-}
-
-/* HERO */
-.hero {
+    background: radial-gradient(circle at top, #f7f8fc, #e9edf5);
     height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-direction: column;
-    text-align: center;
-    padding: 20px;
 }
 
-.glass {
-    background: rgba(255,255,255,0.7);
+/* LOCK SCREEN */
+.lock-container {
+    text-align: center;
+    background: rgba(255,255,255,0.8);
     backdrop-filter: blur(12px);
     padding: 40px;
     border-radius: 20px;
     box-shadow: 0 20px 60px rgba(0,0,0,0.08);
-    max-width: 500px;
-    width: 100%;
+    width: 340px;
+    transition: 0.3s ease;
 }
 
-h1 {
-    font-size: 2.2rem;
-    font-weight: 700;
+.lock-icon {
+    font-size: 40px;
     margin-bottom: 10px;
+    display: inline-block;
+    animation: float 2s ease-in-out infinite;
+}
+
+h2 {
+    margin-bottom: 8px;
 }
 
 p {
+    font-size: 0.9rem;
     color: #666;
-    font-size: 1rem;
-    line-height: 1.6;
 }
 
 input {
@@ -70,125 +67,163 @@ button {
     padding: 12px;
     border: none;
     border-radius: 12px;
-    background: #5b7cff;
+    background: #4f6cff;
     color: white;
     font-weight: 600;
     cursor: pointer;
-    transition: 0.3s ease;
+    transition: 0.2s;
 }
 
 button:hover {
     transform: translateY(-2px);
-    background: #4a69e8;
 }
 
-/* HIDDEN CONTENT */
-#content {
+/* SHAKE ANIMATION */
+.shake {
+    animation: shake 0.4s;
+}
+
+@keyframes shake {
+    0%,100% {transform: translateX(0);}
+    25% {transform: translateX(-6px);}
+    50% {transform: translateX(6px);}
+    75% {transform: translateX(-6px);}
+}
+
+@keyframes float {
+    0%,100% {transform: translateY(0);}
+    50% {transform: translateY(-6px);}
+}
+
+/* ENVELOPE */
+#letterScene {
     display: none;
+    text-align: center;
 }
 
-/* SECTION */
-.section {
-    max-width: 800px;
+.envelope {
+    width: 260px;
+    height: 160px;
+    background: #fff;
+    border-radius: 12px;
+    position: relative;
     margin: auto;
-    padding: 80px 20px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.12);
+    cursor: pointer;
+    overflow: hidden;
+    transition: 0.5s ease;
 }
 
-.card {
+.envelope::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    border-left: 130px solid transparent;
+    border-right: 130px solid transparent;
+    border-top: 90px solid #eaeef7;
+}
+
+.envelope.open {
+    height: 300px;
+}
+
+/* LETTER */
+.letter {
+    position: absolute;
+    top: 160px;
+    left: 0;
+    width: 100%;
+    padding: 20px;
     background: white;
-    padding: 40px;
-    border-radius: 20px;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.06);
-    animation: fadeUp 0.8s ease;
+    opacity: 0;
+    transition: 0.6s ease;
 }
 
-.card h2 {
-    font-size: 1.8rem;
-    margin-bottom: 20px;
+.envelope.open .letter {
+    top: 20px;
+    opacity: 1;
 }
 
-.card p {
-    font-size: 1.05rem;
-    line-height: 1.8;
+.message {
+    text-align: left;
+    font-size: 0.95rem;
+    line-height: 1.6;
     color: #444;
 }
 
-.signature {
-    margin-top: 30px;
-    font-weight: 600;
+.title {
+    margin-bottom: 10px;
+    font-weight: 700;
 }
 
-/* ANIMATION */
-@keyframes fadeUp {
-    from {opacity: 0; transform: translateY(20px);}
-    to {opacity: 1; transform: translateY(0);}
+.hint {
+    margin-top: 20px;
+    font-size: 0.85rem;
+    color: #888;
 }
 </style>
 </head>
 
 <body>
 
-<!-- HERO -->
-<div class="hero" id="loginPage">
-    <div class="glass">
-        <h1>Private Experience</h1>
-        <p>A small space made just for you. Enter the code to continue.</p>
-        
-        <input type="password" id="code" placeholder="Enter access code">
-        <button onclick="unlock()">Enter</button>
-    </div>
+<!-- LOCK -->
+<div id="lock" class="lock-container">
+    <div class="lock-icon">🔒</div>
+    <h2>Private Access</h2>
+    <p>Enter the secret code</p>
+
+    <input type="password" id="code" placeholder="••••••">
+    <button onclick="unlock()">Unlock</button>
 </div>
 
-<!-- MAIN CONTENT -->
-<div id="content">
+<!-- LETTER SCENE -->
+<div id="letterScene">
+    <div class="envelope" id="envelope" onclick="openLetter()">
+        <div class="letter">
+            <div class="title">Happy Birthday ❤️</div>
+            <div class="message">
+                Hey you,<br><br>
 
-    <div class="section">
-        <div class="card">
-            <h2>Happy Birthday</h2>
-            <p>
-                This isn’t just a message.<br><br>
+                This isn’t just a message — it’s something I wanted you to open slowly.<br><br>
 
-                It’s a small reminder that someone took time to build something just for you —  
-                not because they had to, but because they wanted to.<br><br>
+                I hope today feels different in a good way.  
+                Not because of gifts or attention, but because you realize how much you matter.<br><br>
 
-                You don’t always realize how much presence you have in someone’s life,  
-                but you matter more than you think.
-            </p>
+                I didn’t need a reason to make this, I just wanted you to have something made only for you.<br><br>
 
-            <div class="signature">
-                — someone who values you quietly
+                Happy birthday ❤️
             </div>
         </div>
     </div>
 
-    <div class="section">
-        <div class="card">
-            <h2>One More Thing</h2>
-            <p>
-                I hope this year gives you more peace than stress,  
-                more clarity than confusion,  
-                and more happiness than you expected.<br><br>
-
-                Happy birthday ❤️
-            </p>
-        </div>
-    </div>
-
+    <div class="hint">Click the envelope to open</div>
 </div>
 
 <script>
 const SECRET = "040511";
 
 function unlock() {
-    const input = document.getElementById("code").value;
+    const input = document.getElementById("code");
+    const lock = document.getElementById("lock");
 
-    if (input === SECRET) {
-        document.getElementById("loginPage").style.display = "none";
-        document.getElementById("content").style.display = "block";
-        window.scrollTo({ top: 0, behavior: "smooth" });
+    if (input.value === SECRET) {
+        lock.style.opacity = "0";
+        lock.style.transform = "scale(0.9)";
+        setTimeout(() => {
+            lock.style.display = "none";
+            document.getElementById("letterScene").style.display = "block";
+        }, 400);
     } else {
-        alert("Incorrect code ❤️");
+        lock.classList.add("shake");
+        setTimeout(() => lock.classList.remove("shake"), 400);
     }
+}
+
+function openLetter() {
+    document.getElementById("envelope").classList.toggle("open");
 }
 </script>
 
